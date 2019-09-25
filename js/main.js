@@ -48,11 +48,11 @@ var getRandomArray = function (array) {
   });
 };
 
-var ads = [];
+var pins = [];
 for (var i = 0; i < ADS_COUNT; i++) {
-  ads.push({
+  pins.push({
     author: {
-      avatar: AVATARS[getRandomNumber(0, AVATARS.length - 1)]
+      avatar: AVATARS[i]
     },
     offer: {
       title: TITLES[getRandomNumber(0, TITLES.length - 1)],
@@ -82,20 +82,20 @@ var mapPins = document.querySelector('.map__pins');
 
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-var renderPin = function (ad) {
+var renderPin = function (pin) {
   var adElement = pinTemplate.cloneNode(true);
 
-  adElement.style.left = ad.location.x - PIN_WIDTH / 2;
-  adElement.style.top = ad.location.y - PIN_HEIGHT;
-  adElement.src = ad.author.avatar;
-  adElement.alt = ad.offer.title;
+  adElement.style.left = pin.location.x - PIN_WIDTH / 2 + 'px';
+  adElement.style.top = pin.location.y - PIN_HEIGHT + 'px';
+  adElement.querySelector('img').src = pin.author.avatar;
+  adElement.alt = pin.offer.title;
 
   return adElement;
 };
 
 var fragment = document.createDocumentFragment();
-for (i = 0; i < ads.length; i++) {
-  fragment.appendChild(renderPin(ads[i]));
+for (i = 0; i < pins.length; i++) {
+  fragment.appendChild(renderPin(pins[i]));
 }
 
 mapPins.appendChild(fragment);
