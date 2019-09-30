@@ -38,6 +38,8 @@ var PIN_WIDTH = 40;
 
 var PIN_HEIGHT = 40;
 
+var ENTER_KEYCODE = 13;
+
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -74,10 +76,6 @@ for (var i = 0; i < ADS_COUNT; i++) {
   });
 }
 
-
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
 var mapPins = document.querySelector('.map__pins');
 
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -99,3 +97,37 @@ for (i = 0; i < pins.length; i++) {
 }
 
 mapPins.appendChild(fragment);
+
+/* Задание: подробности */
+
+var adForm = document.querySelector('.ad-form');
+var adFormFieldset = adForm.querySelectorAll('fieldset');
+var mapPinMain = document.querySelector('.map__pin--main');
+var map = document.querySelector('.map');
+
+
+var insertDisabled = function () {
+  for (i = 0; i < adFormFieldset.length; i++) {
+    adFormFieldset[i].setAttribute('disabled', 'disabled');
+  }
+};
+
+insertDisabled();
+
+var getActivePage = function () {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  for (i = 0; i < adFormFieldset.length; i++) {
+    adFormFieldset[i].removeAttribute('disabled');
+  }
+};
+
+mapPinMain.addEventListener('mousedown', function () {
+  getActivePage();
+});
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    getActivePage();
+  }
+});
