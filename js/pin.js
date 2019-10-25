@@ -1,9 +1,10 @@
 'use strict';
 
 (function () {
-  var PINS_COUNT = 8;
+
   var PIN_WIDTH = 40;
   var PIN_HEIGHT = 40;
+  var PINS_COUNT = 5;
 
   var mapPins = document.querySelector('.map__pins');
 
@@ -20,22 +21,15 @@
     return adElement;
   };
 
-  var onLoad = function (pins) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < PINS_COUNT; i++) {
-      fragment.appendChild(renderPin(pins[i]));
+  var render = function (data) {
+    var takeNumber = data.length > PINS_COUNT ? PINS_COUNT : data.length;
+    for (var i = 0; i < takeNumber; i++) {
+      mapPins.appendChild(renderPin(data[i]));
     }
-
-    mapPins.appendChild(fragment);
   };
 
-  var onError = function (errorMessage) {
-    var errorPopup = document.querySelector('#error').content.querySelector('.error');
-    var errorText = errorPopup.querySelector('.error__message');
-    errorText.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', errorPopup);
+  window.pin = {
+    mapPins: mapPins,
+    render: render
   };
-
-  window.backend.load(onLoad, onError);
 })();
