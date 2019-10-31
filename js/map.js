@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var ENTER_KEYCODE = 13;
-
   var mapPinMain = document.querySelector('.map__pin--main');
   var map = document.querySelector('.map');
 
@@ -10,9 +8,7 @@
     map.classList.remove('map--faded');
     window.form.removeDisabled();
     window.form.setAddressCoords();
-    if (window.data.pins.length === 0) {
-      window.backend.load(window.data.onLoad, window.data.onError);
-    }
+    window.data.loadPins();
   };
 
   mapPinMain.addEventListener('mousedown', function () {
@@ -20,7 +16,7 @@
   });
 
   mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
+    if (evt.keyCode === window.util.keyCode.ENTER_KEYCODE) {
       getActivePage();
     }
   });

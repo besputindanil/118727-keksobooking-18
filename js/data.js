@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var filters = document.querySelector('.map__filters');
   var housingType = filters.querySelector('#housing-type');
 
@@ -13,7 +12,7 @@
   };
 
   var updatePins = function () {
-    var sameTypes = pins.filter(function (pin) {
+    var sameTypes = pins.slice().filter(function (pin) {
       return ((housingType.value === 'any') ? true : (pin.offer.type === housingType.value));
     });
     window.pin.render(sameTypes);
@@ -40,9 +39,13 @@
     document.body.insertAdjacentElement('afterbegin', errorPopup);
   };
 
+  var loadPins = function () {
+    if (pins.length === 0) {
+      window.backend.load(onLoad, onError);
+    }
+  };
+
   window.data = {
-    pins: pins,
-    onLoad: onLoad,
-    onError: onError
+    loadPins: loadPins,
   };
 })();
