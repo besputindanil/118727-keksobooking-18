@@ -51,15 +51,33 @@
     cardElement.querySelector('.popup__photos').appendChild(createPhoto(card));
     cardElement.querySelector('.popup__avatar').src = card.author.avatar;
 
+    map.insertBefore(cardElement, mapFilters);
+
+    var closeBtnCard = cardElement.querySelector('.popup__close');
+
+    var onEscPressCard = function (evt) {
+      if (evt.keyCode === window.util.keyCode.ESC_KEYCODE) {
+        removeCard();
+      };
+    };
+
+    var removeCard = function () {
+      cardElement.remove();
+      document.removeEventListener('keydown', onEscPressCard);
+    };
+
+    var onCloseBtnCardClick = function () {
+      removeCard();
+    };
+
+    closeBtnCard.addEventListener('click', onCloseBtnCardClick);
+
+    document.addEventListener('keydown', onEscPressCard);
+
     return cardElement;
   };
 
-  window.backend.load (function (cards) {
-    var cardFragment = document.createDocumentFragment();
-    for (var i = 0; i < cards.length; i++) {
-      cardFragment.appendChild(renderCard(cards[i]));
-    }
-
-     map.insertBefore(cardFragment, mapFilters);
-  });
+  window.card = {
+    renderCard: renderCard
+  };
 })();
