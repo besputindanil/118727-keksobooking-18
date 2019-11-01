@@ -29,7 +29,7 @@
 
     pinElement.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.util.keyCode.ENTER_KEYCODE) {
-        onPinElementClick
+        onPinElementClick();
       }
     });
 

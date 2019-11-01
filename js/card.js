@@ -8,10 +8,10 @@
     palace: 'Дворец'
   };
 
-   var map = document.querySelector('.map');
-   var mapFilters = map.querySelector('.map__filters-container');
-   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-   var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photo');
+  var map = document.querySelector('.map');
+  var mapFilters = map.querySelector('.map__filters-container');
+  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photo');
 
   var createFeature = function (card) {
     var featureFragment = document.createDocumentFragment();
@@ -19,7 +19,7 @@
       var featureElement = document.createElement('li');
       featureElement.className = 'popup__feature popup__feature--' + it;
       featureFragment.appendChild(featureElement);
-    })
+    });
 
     return featureFragment;
   };
@@ -30,10 +30,10 @@
       var photoElement = popupPhoto.cloneNode(true);
       photoElement.src = it;
       photoFragment.appendChild(photoElement);
-    })
+    });
 
     return photoFragment;
-  }
+  };
 
   var renderCard = function (card) {
     var cardElement = cardTemplate.cloneNode(true);
@@ -58,7 +58,7 @@
     var onEscPressCard = function (evt) {
       if (evt.keyCode === window.util.keyCode.ESC_KEYCODE) {
         removeCard();
-      };
+      }
     };
 
     var removeCard = function () {

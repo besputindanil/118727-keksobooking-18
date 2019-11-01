@@ -6,5 +6,5 @@
       ENTER_KEYCODE: 13,
       ESC_KEYCODE: 27
     }
-  }
+  };
 })();
