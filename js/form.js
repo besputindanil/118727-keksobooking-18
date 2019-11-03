@@ -67,7 +67,6 @@
   };
 
   timeInSelect.addEventListener('change', onTimeInSelectChange);
-
   timeOutSelect.addEventListener('change', onTimeOutSelectChange);
 
   var onRoomCapacityChange = function () {
@@ -77,7 +76,6 @@
   };
 
   roomNumberSelect.addEventListener('change', onRoomCapacityChange);
-
   capacitySelect.addEventListener('change', onRoomCapacityChange);
 
   window.form = {

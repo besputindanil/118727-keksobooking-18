@@ -89,10 +89,10 @@
   };
 
   mapPinMain.addEventListener('mousedown', onMapPinMainMouseDown);
-
   mapPinMain.addEventListener('keydown', onMapPinMainKeyDown);
-
   mapPinMain.addEventListener('click', function () {
     getActivePage();
   });
+
+  window.map = map;
 })();

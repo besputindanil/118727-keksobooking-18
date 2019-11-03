@@ -1,11 +1,9 @@
 'use strict';
 (function () {
-
   var PIN_WIDTH = 40;
   var PIN_HEIGHT = 40;
   var PINS_COUNT = 5;
 
-  var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -18,7 +16,7 @@
     pinElement.alt = pin.offer.title;
 
     var onPinElementClick = function () {
-      var mapCard = map.querySelector('.map__card');
+      var mapCard = window.map.querySelector('.map__card');
       if (mapCard) {
         mapCard.remove();
       }

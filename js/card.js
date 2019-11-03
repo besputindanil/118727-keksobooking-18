@@ -8,8 +8,7 @@
     palace: 'Дворец'
   };
 
-  var map = document.querySelector('.map');
-  var mapFilters = map.querySelector('.map__filters-container');
+  var mapFilters = document.querySelector('.map__filters-container');
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var popupPhoto = document.querySelector('#card').content.querySelector('.popup__photo');
 
@@ -51,7 +50,7 @@
     cardElement.querySelector('.popup__photos').appendChild(createPhoto(card));
     cardElement.querySelector('.popup__avatar').src = card.author.avatar;
 
-    map.insertBefore(cardElement, mapFilters);
+    window.map.insertBefore(cardElement, mapFilters);
 
     var closeBtnCard = cardElement.querySelector('.popup__close');
 
