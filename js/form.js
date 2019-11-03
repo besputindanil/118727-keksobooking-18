@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var PRIMARY_MAIN_PIN_X = 570;
-  var PRIMARY_MAIN_PIN_Y = 375;
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 65;
   var ARROW_HEIGHT = 22;
@@ -47,9 +45,10 @@
     }
   };
 
-  var setAddressCoords = function () {
-    addressInput.value = (PRIMARY_MAIN_PIN_X + Math.floor(MAIN_PIN_WIDTH / 2)) + ', ' + (PRIMARY_MAIN_PIN_Y + Math.floor(MAIN_PIN_HEIGHT / 2) + ARROW_HEIGHT);
+  var setAddressCoords = function (x, y) {
+    addressInput.value = (x + Math.floor(MAIN_PIN_WIDTH / 2)) + ', ' + (y + Math.floor(MAIN_PIN_HEIGHT / 2) + ARROW_HEIGHT);
   };
+
 
   var onTypeChange = function (evt) {
     var minPrice = typePriceRelation[evt.target.value];
