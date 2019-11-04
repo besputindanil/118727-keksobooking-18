@@ -56,17 +56,17 @@
 
     var onEscPressCard = function (evt) {
       if (evt.keyCode === window.util.keyCode.ESC_KEYCODE) {
-        removeCard();
+        closeCard();
       }
     };
 
-    var removeCard = function () {
+    var closeCard = function () {
       cardElement.remove();
       document.removeEventListener('keydown', onEscPressCard);
     };
 
     var onCloseBtnCardClick = function () {
-      removeCard();
+      closeCard();
     };
 
     closeBtnCard.addEventListener('click', onCloseBtnCardClick);
@@ -76,7 +76,15 @@
     return cardElement;
   };
 
+  var removeCard = function () {
+    var mapCard = window.map.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  };
+
   window.card = {
-    renderCard: renderCard
+    render: renderCard,
+    remove: removeCard
   };
 })();

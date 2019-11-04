@@ -16,11 +16,8 @@
     pinElement.alt = pin.offer.title;
 
     var onPinElementClick = function () {
-      var mapCard = window.map.querySelector('.map__card');
-      if (mapCard) {
-        mapCard.remove();
-      }
-      window.card.renderCard(pin);
+      window.card.remove();
+      window.card.render(pin);
     };
 
     pinElement.addEventListener('click', onPinElementClick);
@@ -41,8 +38,16 @@
     }
   };
 
+  var removePin = function () {
+    var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    mapPins.forEach(function (item) {
+      item.remove()
+    });
+  };
+
   window.pin = {
     mapPins: mapPins,
-    render: render
+    render: render,
+    remove: removePin,
   };
 })();

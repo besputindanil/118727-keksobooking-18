@@ -94,5 +94,11 @@
     getActivePage();
   });
 
+  var getPinMainPrimaryCoords = function () {
+    mapPinMain.style.left = PRIMARY_MAIN_PIN_X + 'px';
+    mapPinMain.style.top = PRIMARY_MAIN_PIN_Y + 'px';
+  };
+
   window.map = map;
+  window.map.getPinMainPrimaryCoords = getPinMainPrimaryCoords;
 })();

@@ -30,19 +30,25 @@
   var roomNumberSelect = document.querySelector('[name=rooms]');
   var capacitySelect = document.querySelector('[name=capacity]');
 
-  var setDisabled = function () {
+  var setFieldsetDisabled = function () {
     for (var i = 0; i < adFormFieldset.length; i++) {
       adFormFieldset[i].setAttribute('disabled', 'disabled');
     }
   };
 
-  setDisabled();
+  setFieldsetDisabled();
 
   var removeDisabled = function () {
     adForm.classList.remove('ad-form--disabled');
     for (var i = 0; i < adFormFieldset.length; i++) {
       adFormFieldset[i].removeAttribute('disabled');
     }
+  };
+
+  var deactivateForm = function () {
+    setFieldsetDisabled();
+    adForm.classList.add('ad-form--disabled');
+    adForm.reset();
   };
 
   var setAddressCoords = function (x, y) {
@@ -78,8 +84,12 @@
   roomNumberSelect.addEventListener('change', onRoomCapacityChange);
   capacitySelect.addEventListener('change', onRoomCapacityChange);
 
+
+
   window.form = {
+    setFieldsetDisabled: setFieldsetDisabled,
     removeDisabled: removeDisabled,
+    deactivateForm: deactivateForm,
     setAddressCoords: setAddressCoords
   };
 })();
