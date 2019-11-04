@@ -1,24 +1,37 @@
 'use strict';
-
 (function () {
-
   var PIN_WIDTH = 40;
   var PIN_HEIGHT = 40;
   var PINS_COUNT = 5;
 
   var mapPins = document.querySelector('.map__pins');
-
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   var renderPin = function (pin) {
-    var adElement = pinTemplate.cloneNode(true);
+    var pinElement = pinTemplate.cloneNode(true);
 
-    adElement.style.left = pin.location.x - PIN_WIDTH / 2 + 'px';
-    adElement.style.top = pin.location.y - PIN_HEIGHT + 'px';
-    adElement.querySelector('img').src = pin.author.avatar;
-    adElement.alt = pin.offer.title;
+    pinElement.style.left = pin.location.x - PIN_WIDTH / 2 + 'px';
+    pinElement.style.top = pin.location.y - PIN_HEIGHT + 'px';
+    pinElement.querySelector('img').src = pin.author.avatar;
+    pinElement.alt = pin.offer.title;
 
-    return adElement;
+    var onPinElementClick = function () {
+      var mapCard = window.map.querySelector('.map__card');
+      if (mapCard) {
+        mapCard.remove();
+      }
+      window.card.renderCard(pin);
+    };
+
+    pinElement.addEventListener('click', onPinElementClick);
+
+    pinElement.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.util.keyCode.ENTER_KEYCODE) {
+        onPinElementClick();
+      }
+    });
+
+    return pinElement;
   };
 
   var render = function (data) {
