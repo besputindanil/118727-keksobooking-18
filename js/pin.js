@@ -20,13 +20,14 @@
       window.card.render(pin);
     };
 
-    pinElement.addEventListener('click', onPinElementClick);
-
-    pinElement.addEventListener('keydown', function (evt) {
+    var onPinElementEnterPress = function (evt) {
       if (evt.keyCode === window.util.keyCode.ENTER_KEYCODE) {
         onPinElementClick();
       }
-    });
+    };
+
+    pinElement.addEventListener('click', onPinElementClick);
+    pinElement.addEventListener('keydown', onPinElementEnterPress);
 
     return pinElement;
   };
@@ -39,9 +40,9 @@
   };
 
   var removePin = function () {
-    var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    mapPins.forEach(function (item) {
-      item.remove()
+    var mapPinElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    mapPinElements.forEach(function (item) {
+      item.remove();
     });
   };
 

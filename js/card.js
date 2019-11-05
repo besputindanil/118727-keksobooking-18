@@ -54,7 +54,7 @@
 
     var closeBtnCard = cardElement.querySelector('.popup__close');
 
-    var onEscPressCard = function (evt) {
+    var onCardEscPress = function (evt) {
       if (evt.keyCode === window.util.keyCode.ESC_KEYCODE) {
         closeCard();
       }
@@ -62,7 +62,7 @@
 
     var closeCard = function () {
       cardElement.remove();
-      document.removeEventListener('keydown', onEscPressCard);
+      document.removeEventListener('keydown', onCardEscPress);
     };
 
     var onCloseBtnCardClick = function () {
@@ -71,7 +71,7 @@
 
     closeBtnCard.addEventListener('click', onCloseBtnCardClick);
 
-    document.addEventListener('keydown', onEscPressCard);
+    document.addEventListener('keydown', onCardEscPress);
 
     return cardElement;
   };

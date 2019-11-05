@@ -84,8 +84,6 @@
   roomNumberSelect.addEventListener('change', onRoomCapacityChange);
   capacitySelect.addEventListener('change', onRoomCapacityChange);
 
-
-
   window.form = {
     setFieldsetDisabled: setFieldsetDisabled,
     removeDisabled: removeDisabled,

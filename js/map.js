@@ -88,11 +88,13 @@
     }
   };
 
+  var onMapPinMainClick = function () {
+    getActivePage();
+  };
+
   mapPinMain.addEventListener('mousedown', onMapPinMainMouseDown);
   mapPinMain.addEventListener('keydown', onMapPinMainKeyDown);
-  mapPinMain.addEventListener('click', function () {
-    getActivePage();
-  });
+  mapPinMain.addEventListener('click', onMapPinMainClick);
 
   var getPinMainPrimaryCoords = function () {
     mapPinMain.style.left = PRIMARY_MAIN_PIN_X + 'px';
