@@ -7,12 +7,28 @@
   };
 
   var filters = document.querySelector('.map__filters');
+  var filtersSelect = filters.querySelectorAll('select');
   var housingType = filters.querySelector('#housing-type');
   var housingPrice = filters.querySelector('#housing-price');
   var housingRooms = filters.querySelector('#housing-rooms');
   var housingGuests = filters.querySelector('#housing-guests');
   var housingFeatures = filters.querySelector('#housing-features');
+  var adForm = document.querySelector('.ad-form');
+  var resetBtn = adForm.querySelector('.ad-form__reset');
   var main = document.querySelector('main');
+
+  var deactivateFilters = function () {
+    filters.reset();
+    window.util.setDisabled(filtersSelect);
+    housingFeatures.setAttribute('disabled', 'disabled');
+  };
+
+  deactivateFilters();
+
+  var activateFilters = function () {
+    window.util.removeDisabled(filtersSelect);
+    housingFeatures.removeAttribute('disabled', 'disabled');
+  };
 
   var filterType = function (pin) {
     return housingType.value === 'any' || pin.offer.type === housingType.value;
@@ -78,9 +94,7 @@
   };
 
   var onErrorEscPress = function (evt) {
-    if (evt.keyCode === window.util.keyCode.ESC_KEYCODE) {
-      closeError();
-    }
+    window.util.onEscPress(evt, closeError);
   };
 
   var onError = function () {
@@ -109,34 +123,40 @@
   };
 
   var onSuccessEscPress = function (evt) {
-    if (evt.keyCode === window.util.keyCode.ESC_KEYCODE) {
-      closeSuccess();
-    }
+    window.util.onEscPress(evt, closeSuccess);
   };
 
   var onSuccess = function () {
     var successPopup = document.querySelector('#success').content.querySelector('.success');
-    document.body.insertAdjacentElement('afterbegin', successPopup);
+    main.insertAdjacentElement('afterbegin', successPopup);
     successPopup.addEventListener('click', onSuccessClick);
     document.addEventListener('keydown', onSuccessEscPress);
   };
 
-  var onFormSuccessSubmit = function () {
-    onSuccess();
-    window.map.classList.add('map--faded');
+  var onResetBtnClick = function () {
+    window.map.element.classList.add('map--faded');
+    deactivateFilters();
     window.form.deactivateForm();
     window.pin.remove();
     window.card.remove();
     window.map.getPinMainPrimaryCoords();
+    window.photo.remove();
   };
 
-  var adForm = document.querySelector('.ad-form');
+  resetBtn.addEventListener('click', onResetBtnClick);
+
+  var onFormSuccessSubmit = function () {
+    onSuccess();
+    onResetBtnClick();
+  };
+
   adForm.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(adForm), onFormSuccessSubmit, onError);
     evt.preventDefault();
   });
 
   window.data = {
-    loadPins: loadPins,
+    activateFilters: activateFilters,
+    loadPins: loadPins
   };
 })();

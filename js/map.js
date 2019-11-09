@@ -14,9 +14,12 @@
   var mapPinMain = document.querySelector('.map__pin--main');
   var map = document.querySelector('.map');
 
+  window.form.setAddressCoords(PRIMARY_MAIN_PIN_X, PRIMARY_MAIN_PIN_Y);
+
   var getActivePage = function () {
     map.classList.remove('map--faded');
-    window.form.removeDisabled();
+    window.data.activateFilters();
+    window.form.activateForm();
     window.data.loadPins();
   };
 
@@ -28,11 +31,8 @@
       y: evt.clientY
     };
 
-    var dragged = true;
-
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      dragged = false;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -68,39 +68,31 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
+      getActivePage();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-
-      if (dragged) {
-        window.form.setAddressCoords(PRIMARY_MAIN_PIN_X, PRIMARY_MAIN_PIN_Y);
-      }
     };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  var onMapPinMainKeyDown = function (evt) {
-    if (evt.keyCode === window.util.keyCode.ENTER_KEYCODE) {
-      getActivePage();
-      window.form.setAddressCoords(PRIMARY_MAIN_PIN_X, PRIMARY_MAIN_PIN_Y);
-    }
-  };
-
-  var onMapPinMainClick = function () {
-    getActivePage();
+  var onMapPinMainEnterPress = function (evt) {
+    window.util.onEnterPress(evt, getActivePage);
   };
 
   mapPinMain.addEventListener('mousedown', onMapPinMainMouseDown);
-  mapPinMain.addEventListener('keydown', onMapPinMainKeyDown);
-  mapPinMain.addEventListener('click', onMapPinMainClick);
+  mapPinMain.addEventListener('keydown', onMapPinMainEnterPress);
 
   var getPinMainPrimaryCoords = function () {
+    window.form.setAddressCoords(PRIMARY_MAIN_PIN_X, PRIMARY_MAIN_PIN_Y);
     mapPinMain.style.left = PRIMARY_MAIN_PIN_X + 'px';
     mapPinMain.style.top = PRIMARY_MAIN_PIN_Y + 'px';
   };
 
-  window.map = map;
-  window.map.getPinMainPrimaryCoords = getPinMainPrimaryCoords;
+  window.map = {
+    element: map,
+    getPinMainPrimaryCoords: getPinMainPrimaryCoords
+  };
 })();

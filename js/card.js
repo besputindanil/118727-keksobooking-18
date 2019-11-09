@@ -50,17 +50,16 @@
     cardElement.querySelector('.popup__photos').appendChild(createPhoto(card));
     cardElement.querySelector('.popup__avatar').src = card.author.avatar;
 
-    window.map.insertBefore(cardElement, mapFilters);
+    window.map.element.insertBefore(cardElement, mapFilters);
 
     var closeBtnCard = cardElement.querySelector('.popup__close');
 
     var onCardEscPress = function (evt) {
-      if (evt.keyCode === window.util.keyCode.ESC_KEYCODE) {
-        closeCard();
-      }
+      window.util.onEscPress(evt, closeCard);
     };
 
     var closeCard = function () {
+      window.pin.deactivate();
       cardElement.remove();
       document.removeEventListener('keydown', onCardEscPress);
     };
@@ -70,14 +69,13 @@
     };
 
     closeBtnCard.addEventListener('click', onCloseBtnCardClick);
-
     document.addEventListener('keydown', onCardEscPress);
 
     return cardElement;
   };
 
   var removeCard = function () {
-    var mapCard = window.map.querySelector('.map__card');
+    var mapCard = window.map.element.querySelector('.map__card');
     if (mapCard) {
       mapCard.remove();
     }

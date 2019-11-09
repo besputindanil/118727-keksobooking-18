@@ -30,23 +30,15 @@
   var roomNumberSelect = document.querySelector('[name=rooms]');
   var capacitySelect = document.querySelector('[name=capacity]');
 
-  var setFieldsetDisabled = function () {
-    for (var i = 0; i < adFormFieldset.length; i++) {
-      adFormFieldset[i].setAttribute('disabled', 'disabled');
-    }
-  };
+  window.util.setDisabled(adFormFieldset);
 
-  setFieldsetDisabled();
-
-  var removeDisabled = function () {
+  var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
-    for (var i = 0; i < adFormFieldset.length; i++) {
-      adFormFieldset[i].removeAttribute('disabled');
-    }
+    window.util.removeDisabled(adFormFieldset);
   };
 
   var deactivateForm = function () {
-    setFieldsetDisabled();
+    window.util.setDisabled(adFormFieldset);
     adForm.classList.add('ad-form--disabled');
     adForm.reset();
   };
@@ -54,7 +46,6 @@
   var setAddressCoords = function (x, y) {
     addressInput.value = (x + Math.floor(MAIN_PIN_WIDTH / 2)) + ', ' + (y + Math.floor(MAIN_PIN_HEIGHT / 2) + ARROW_HEIGHT);
   };
-
 
   var onTypeChange = function (evt) {
     var minPrice = typePriceRelation[evt.target.value];
@@ -85,8 +76,7 @@
   capacitySelect.addEventListener('change', onRoomCapacityChange);
 
   window.form = {
-    setFieldsetDisabled: setFieldsetDisabled,
-    removeDisabled: removeDisabled,
+    activateForm: activateForm,
     deactivateForm: deactivateForm,
     setAddressCoords: setAddressCoords
   };

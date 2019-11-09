@@ -16,14 +16,14 @@
     pinElement.alt = pin.offer.title;
 
     var onPinElementClick = function () {
+      deactivatePin();
+      pinElement.classList.add('map__pin--active');
       window.card.remove();
       window.card.render(pin);
     };
 
     var onPinElementEnterPress = function (evt) {
-      if (evt.keyCode === window.util.keyCode.ENTER_KEYCODE) {
-        onPinElementClick();
-      }
+      window.util.onEnterPress(evt, onPinElementClick);
     };
 
     pinElement.addEventListener('click', onPinElementClick);
@@ -46,9 +46,17 @@
     });
   };
 
+  var deactivatePin = function () {
+    var mapActivePin = document.querySelector('.map__pin--active');
+    if (mapActivePin) {
+      mapActivePin.classList.remove('map__pin--active');
+    }
+  };
+
   window.pin = {
     mapPins: mapPins,
     render: render,
     remove: removePin,
+    deactivate: deactivatePin
   };
 })();
