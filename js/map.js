@@ -18,8 +18,8 @@
 
   var getActivePage = function () {
     map.classList.remove('map--faded');
-    window.data.activateFilters();
-    window.form.activateForm();
+    window.filter.activate();
+    window.form.activate();
     window.data.loadPins();
   };
 

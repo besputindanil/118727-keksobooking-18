@@ -76,8 +76,8 @@
   capacitySelect.addEventListener('change', onRoomCapacityChange);
 
   window.form = {
-    activateForm: activateForm,
-    deactivateForm: deactivateForm,
+    activate: activateForm,
+    deactivate: deactivateForm,
     setAddressCoords: setAddressCoords
   };
 })();

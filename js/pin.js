@@ -54,7 +54,6 @@
   };
 
   window.pin = {
-    mapPins: mapPins,
     render: render,
     remove: removePin,
     deactivate: deactivatePin
