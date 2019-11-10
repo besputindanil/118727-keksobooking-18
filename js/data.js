@@ -1,51 +1,90 @@
 'use strict';
 
 (function () {
-  var filters = document.querySelector('.map__filters');
-  var housingType = filters.querySelector('#housing-type');
-
-  var removePins = function () {
-    var mapPin = document.querySelectorAll('.map__pin');
-    for (var i = 1; i < mapPin.length; i++) {
-      window.pin.mapPins.removeChild(mapPin[i]);
-    }
-  };
-
-  var updatePins = function () {
-    var sameTypes = pins.slice().filter(function (pin) {
-      return ((housingType.value === 'any') ? true : (pin.offer.type === housingType.value));
-    });
-    window.pin.render(sameTypes);
-  };
-
-  var onTypeChange = function () {
-    removePins();
-    updatePins();
-  };
-
-  housingType.addEventListener('change', onTypeChange);
-
-  var pins = [];
+  var adForm = document.querySelector('.ad-form');
+  var resetBtn = adForm.querySelector('.ad-form__reset');
+  var main = document.querySelector('main');
 
   var onLoad = function (data) {
-    pins = data;
-    window.pin.render(pins);
+    window.data.pins = data;
+    window.pin.render(window.data.pins);
   };
 
-  var onError = function (errorMessage) {
+  var closeError = function () {
+    var error = document.querySelector('.error');
+    error.remove();
+    document.removeEventListener('keydown', onErrorEscPress);
+  };
+
+  var onErrorClick = function () {
+    closeError();
+  };
+
+  var onErrorEscPress = function (evt) {
+    window.util.onEscPress(evt, closeError);
+  };
+
+  var onError = function () {
     var errorPopup = document.querySelector('#error').content.querySelector('.error');
-    var errorText = errorPopup.querySelector('.error__message');
-    errorText.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', errorPopup);
+    main.insertAdjacentElement('afterbegin', errorPopup);
+    var closeBtnError = document.querySelector('.error__button');
+    closeBtnError.addEventListener('click', onErrorClick);
+    errorPopup.addEventListener('click', onErrorClick);
+    document.addEventListener('keydown', onErrorEscPress);
   };
 
   var loadPins = function () {
-    if (pins.length === 0) {
+    if (window.data.pins.length === 0) {
       window.backend.load(onLoad, onError);
     }
   };
 
+  var closeSuccess = function () {
+    var success = document.querySelector('.success');
+    success.remove();
+    document.removeEventListener('keydown', onSuccessEscPress);
+  };
+
+  var onSuccessClick = function () {
+    closeSuccess();
+  };
+
+  var onSuccessEscPress = function (evt) {
+    window.util.onEscPress(evt, closeSuccess);
+  };
+
+  var onSuccess = function () {
+    var successPopup = document.querySelector('#success').content.querySelector('.success');
+    main.insertAdjacentElement('afterbegin', successPopup);
+    successPopup.addEventListener('click', onSuccessClick);
+    document.addEventListener('keydown', onSuccessEscPress);
+  };
+
+  var onResetBtnClick = function () {
+    window.map.element.classList.add('map--faded');
+    window.filter.deactivate();
+    window.form.deactivate();
+    window.pin.remove();
+    window.card.remove();
+    window.map.getPinMainPrimaryCoords();
+    window.photo.remove();
+    window.data.pins = [];
+  };
+
+  resetBtn.addEventListener('click', onResetBtnClick);
+
+  var onFormSuccessSubmit = function () {
+    onSuccess();
+    onResetBtnClick();
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(adForm), onFormSuccessSubmit, onError);
+    evt.preventDefault();
+  });
+
   window.data = {
-    loadPins: loadPins,
+    pins: [],
+    loadPins: loadPins
   };
 })();

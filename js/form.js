@@ -30,25 +30,22 @@
   var roomNumberSelect = document.querySelector('[name=rooms]');
   var capacitySelect = document.querySelector('[name=capacity]');
 
-  var setDisabled = function () {
-    for (var i = 0; i < adFormFieldset.length; i++) {
-      adFormFieldset[i].setAttribute('disabled', 'disabled');
-    }
+  window.util.setDisabled(adFormFieldset);
+
+  var activateForm = function () {
+    adForm.classList.remove('ad-form--disabled');
+    window.util.removeDisabled(adFormFieldset);
   };
 
-  setDisabled();
-
-  var removeDisabled = function () {
-    adForm.classList.remove('ad-form--disabled');
-    for (var i = 0; i < adFormFieldset.length; i++) {
-      adFormFieldset[i].removeAttribute('disabled');
-    }
+  var deactivateForm = function () {
+    window.util.setDisabled(adFormFieldset);
+    adForm.classList.add('ad-form--disabled');
+    adForm.reset();
   };
 
   var setAddressCoords = function (x, y) {
     addressInput.value = (x + Math.floor(MAIN_PIN_WIDTH / 2)) + ', ' + (y + Math.floor(MAIN_PIN_HEIGHT / 2) + ARROW_HEIGHT);
   };
-
 
   var onTypeChange = function (evt) {
     var minPrice = typePriceRelation[evt.target.value];
@@ -79,7 +76,8 @@
   capacitySelect.addEventListener('change', onRoomCapacityChange);
 
   window.form = {
-    removeDisabled: removeDisabled,
+    activate: activateForm,
+    deactivate: deactivateForm,
     setAddressCoords: setAddressCoords
   };
 })();
