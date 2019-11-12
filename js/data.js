@@ -66,7 +66,7 @@
     window.form.deactivate();
     window.pin.remove();
     window.card.remove();
-    window.map.getPinMainPrimaryCoords();
+    window.map.getPinMainPrimaryPosition();
     window.photo.remove();
     window.data.pins = [];
   };

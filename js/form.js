@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-  var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HEIGHT = 65;
-  var ARROW_HEIGHT = 22;
   var ROOM_CAPACITY_MESSAGE = 'Количество гостей не соответствует количеству комнат';
 
   var roomCapacityRelation = {
@@ -23,7 +20,6 @@
   var adForm = document.querySelector('.ad-form');
   var adFormFieldset = adForm.querySelectorAll('fieldset');
   var priceInput = adForm.querySelector('#price');
-  var addressInput = adForm.querySelector('#address');
   var typeSelect = document.querySelector('[name=type]');
   var timeInSelect = document.querySelector('[name=timein]');
   var timeOutSelect = document.querySelector('[name=timeout]');
@@ -41,10 +37,6 @@
     window.util.setDisabled(adFormFieldset);
     adForm.classList.add('ad-form--disabled');
     adForm.reset();
-  };
-
-  var setAddressCoords = function (x, y) {
-    addressInput.value = (x + Math.floor(MAIN_PIN_WIDTH / 2)) + ', ' + (y + Math.floor(MAIN_PIN_HEIGHT / 2) + ARROW_HEIGHT);
   };
 
   var onTypeChange = function (evt) {
@@ -75,9 +67,14 @@
   roomNumberSelect.addEventListener('change', onRoomCapacityChange);
   capacitySelect.addEventListener('change', onRoomCapacityChange);
 
+  var changePricePlaceholder = function () {
+    priceInput.placeholder = typePriceRelation.flat;
+  };
+
   window.form = {
     activate: activateForm,
     deactivate: deactivateForm,
-    setAddressCoords: setAddressCoords
+    changePricePlaceholder: changePricePlaceholder,
+    changeRoomCapacity: onRoomCapacityChange
   };
 })();
