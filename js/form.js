@@ -3,18 +3,18 @@
 (function () {
   var ROOM_CAPACITY_MESSAGE = 'Количество гостей не соответствует количеству комнат';
 
-  var roomCapacityRelation = {
+  var RoomCapacityRelation = {
     1: [1],
     2: [1, 2],
     3: [1, 2, 3],
     100: [0]
   };
 
-  var typePriceRelation = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
+  var TypePriceRelation = {
+    BUNGALO: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
   };
 
   var adForm = document.querySelector('.ad-form');
@@ -40,7 +40,7 @@
   };
 
   var onTypeChange = function (evt) {
-    var minPrice = typePriceRelation[evt.target.value];
+    var minPrice = TypePriceRelation[evt.target.value.toUpperCase()];
     priceInput.min = minPrice;
     priceInput.placeholder = minPrice;
   };
@@ -61,14 +61,14 @@
   var onRoomCapacityChange = function () {
     var roomsNumber = roomNumberSelect.value;
     var capacity = parseInt(capacitySelect.value, 10);
-    capacitySelect.setCustomValidity(roomCapacityRelation[roomsNumber].includes(capacity) ? '' : ROOM_CAPACITY_MESSAGE);
+    capacitySelect.setCustomValidity(RoomCapacityRelation[roomsNumber].includes(capacity) ? '' : ROOM_CAPACITY_MESSAGE);
   };
 
   roomNumberSelect.addEventListener('change', onRoomCapacityChange);
   capacitySelect.addEventListener('change', onRoomCapacityChange);
 
   var changePricePlaceholder = function () {
-    priceInput.placeholder = typePriceRelation.flat;
+    priceInput.placeholder = TypePriceRelation.FLAT;
   };
 
   window.form = {

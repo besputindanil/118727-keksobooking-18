@@ -3,7 +3,7 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var HEADER_PREVIEW = 'img/muffin-grey.svg';
-  var typePhotoOptions = {
+  var TypePhotoOptions = {
     WIDTH: 70,
     HEIGHT: 70,
     BORDER_RADIUS: 5
@@ -20,8 +20,8 @@
     if (file) {
       var fileName = file.name.toLowerCase();
 
-      var matches = FILE_TYPES.some(function (it) {
-        return fileName.endsWith(it);
+      var matches = FILE_TYPES.some(function (item) {
+        return fileName.endsWith(item);
       });
 
       if (matches) {
@@ -42,8 +42,8 @@
     if (file) {
       var fileName = file.name.toLowerCase();
 
-      var matches = FILE_TYPES.some(function (it) {
-        return fileName.endsWith(it);
+      var matches = FILE_TYPES.some(function (item) {
+        return fileName.endsWith(item);
       });
 
       if (matches) {
@@ -52,9 +52,9 @@
         reader.addEventListener('load', function () {
           var newPhoto = document.createElement('img');
           newPhoto.src = reader.result;
-          newPhoto.width = typePhotoOptions.WIDTH;
-          newPhoto.height = typePhotoOptions.HEIGHT;
-          newPhoto.style.borderRadius = typePhotoOptions.BORDER_RADIUS + 'px';
+          newPhoto.width = TypePhotoOptions.WIDTH;
+          newPhoto.height = TypePhotoOptions.HEIGHT;
+          newPhoto.style.borderRadius = TypePhotoOptions.BORDER_RADIUS + 'px';
           typePhotoImage.appendChild(newPhoto);
         });
 
@@ -69,10 +69,10 @@
 
   var removeImage = function () {
     userPhotoImage.src = HEADER_PREVIEW;
-    var addTypePhotos = typePhotoImage.querySelectorAll('img');
-    if (addTypePhotos) {
-      addTypePhotos.forEach(function (it) {
-        it.remove();
+    var typePhotos = typePhotoImage.querySelectorAll('img');
+    if (typePhotos) {
+      typePhotos.forEach(function (item) {
+        item.remove();
       });
     }
   };

@@ -2,12 +2,15 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
-  var resetBtn = adForm.querySelector('.ad-form__reset');
+  var resetButton = adForm.querySelector('.ad-form__reset');
+  var errorPopup = document.querySelector('#error').content.querySelector('.error');
+  var successPopup = document.querySelector('#success').content.querySelector('.success');
   var main = document.querySelector('main');
 
   var onLoad = function (data) {
     window.data.pins = data;
     window.pin.render(window.data.pins);
+    window.filter.activate();
   };
 
   var closeError = function () {
@@ -21,14 +24,13 @@
   };
 
   var onErrorEscPress = function (evt) {
-    window.util.onEscPress(evt, closeError);
+    window.util.pressEsc(evt, closeError);
   };
 
   var onError = function () {
-    var errorPopup = document.querySelector('#error').content.querySelector('.error');
     main.insertAdjacentElement('afterbegin', errorPopup);
-    var closeBtnError = document.querySelector('.error__button');
-    closeBtnError.addEventListener('click', onErrorClick);
+    var closeButtonError = document.querySelector('.error__button');
+    closeButtonError.addEventListener('click', onErrorClick);
     errorPopup.addEventListener('click', onErrorClick);
     document.addEventListener('keydown', onErrorEscPress);
   };
@@ -50,17 +52,16 @@
   };
 
   var onSuccessEscPress = function (evt) {
-    window.util.onEscPress(evt, closeSuccess);
+    window.util.pressEsc(evt, closeSuccess);
   };
 
   var onSuccess = function () {
-    var successPopup = document.querySelector('#success').content.querySelector('.success');
     main.insertAdjacentElement('afterbegin', successPopup);
     successPopup.addEventListener('click', onSuccessClick);
     document.addEventListener('keydown', onSuccessEscPress);
   };
 
-  var onResetBtnClick = function () {
+  var onResetButtonClick = function () {
     window.map.element.classList.add('map--faded');
     window.filter.deactivate();
     window.form.deactivate();
@@ -71,11 +72,11 @@
     window.data.pins = [];
   };
 
-  resetBtn.addEventListener('click', onResetBtnClick);
+  resetButton.addEventListener('click', onResetButtonClick);
 
   var onFormSuccessSubmit = function () {
     onSuccess();
-    onResetBtnClick();
+    onResetButtonClick();
   };
 
   adForm.addEventListener('submit', function (evt) {

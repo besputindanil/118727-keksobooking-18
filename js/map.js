@@ -7,7 +7,7 @@
   var PRIMARY_MAIN_PIN_X = 570;
   var PRIMARY_MAIN_PIN_Y = 375;
 
-  var intervalCoords = {
+  var IntervalCoords = {
     X_MIN: 0,
     X_MAX: 1200,
     Y_MIN: 130,
@@ -31,7 +31,6 @@
   var getActivePage = function () {
     map.classList.remove('map--faded');
     window.data.loadPins();
-    window.filter.activate();
     window.form.activate();
     setAddressCoords(mapPinMain.offsetLeft, mapPinMain.offsetTop);
     window.form.changePricePlaceholder();
@@ -65,10 +64,10 @@
       };
 
       var restrictions = {
-        top: intervalCoords.Y_MIN - mapPinMain.offsetHeight - ARROW_HEIGHT,
-        right: intervalCoords.X_MAX - mapPinMain.offsetWidth / 2,
-        bottom: intervalCoords.Y_MAX - mapPinMain.offsetHeight - ARROW_HEIGHT,
-        left: intervalCoords.X_MIN - mapPinMain.offsetWidth / 2
+        top: IntervalCoords.Y_MIN - mapPinMain.offsetHeight - ARROW_HEIGHT,
+        right: IntervalCoords.X_MAX - mapPinMain.offsetWidth / 2,
+        bottom: IntervalCoords.Y_MAX - mapPinMain.offsetHeight - ARROW_HEIGHT,
+        left: IntervalCoords.X_MIN - mapPinMain.offsetWidth / 2
       };
 
       if (mapPinMainCoords.x >= restrictions.left && mapPinMainCoords.x <= restrictions.right) {
@@ -94,7 +93,7 @@
   };
 
   var onMapPinMainEnterPress = function (evt) {
-    window.util.onEnterPress(evt, getActivePage);
+    window.util.pressEnter(evt, getActivePage);
   };
 
   mapPinMain.addEventListener('mousedown', onMapPinMainMouseDown);

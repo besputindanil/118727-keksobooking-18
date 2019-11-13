@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var priceRestrictions = {
+  var PriceRestrictions = {
     LOWER: 10000,
     UPPER: 50000
   };
@@ -35,11 +35,11 @@
     if (housingPrice.value === 'any') {
       return true;
     } else if (housingPrice.value === 'low') {
-      return pin.offer.price < priceRestrictions.LOWER;
+      return pin.offer.price < PriceRestrictions.LOWER;
     } else if (housingPrice.value === 'middle') {
-      return pin.offer.price >= priceRestrictions.LOWER && pin.offer.price <= priceRestrictions.UPPER;
+      return pin.offer.price >= PriceRestrictions.LOWER && pin.offer.price <= PriceRestrictions.UPPER;
     } else if (housingPrice.value === 'high') {
-      return pin.offer.price > priceRestrictions.UPPER;
+      return pin.offer.price > PriceRestrictions.UPPER;
     }
     return true;
   };
@@ -60,7 +60,7 @@
   };
 
   var updatePins = function () {
-    var pinsCopy = window.data.pins.slice();
+    var pinsCopy = window.data.pins.slice(0, window.pin.count);
     var filterPins = pinsCopy.filter(filterType).filter(filterPrice).filter(filterRooms).filter(filterGuests).filter(filterFeauters);
     window.pin.render(filterPins);
   };

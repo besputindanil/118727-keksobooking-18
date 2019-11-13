@@ -23,7 +23,7 @@
     };
 
     var onPinElementEnterPress = function (evt) {
-      window.util.onEnterPress(evt, onPinElementClick);
+      window.util.pressEnter(evt, onPinElementClick);
     };
 
     pinElement.addEventListener('click', onPinElementClick);
@@ -32,10 +32,10 @@
     return pinElement;
   };
 
-  var render = function (data) {
-    var takeNumber = data.length > PINS_COUNT ? PINS_COUNT : data.length;
+  var render = function (pins) {
+    var takeNumber = pins.length > PINS_COUNT ? PINS_COUNT : pins.length;
     for (var i = 0; i < takeNumber; i++) {
-      mapPins.appendChild(renderPin(data[i]));
+      mapPins.appendChild(renderPin(pins[i]));
     }
   };
 
@@ -54,6 +54,7 @@
   };
 
   window.pin = {
+    count: PINS_COUNT,
     render: render,
     remove: removePin,
     deactivate: deactivatePin
