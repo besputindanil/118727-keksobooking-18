@@ -1,11 +1,11 @@
 'use strict';
 
 (function () {
-  var typeHousing = {
-    flat: 'Квартира',
-    bungalo: 'Бунгало',
-    house: 'Дом',
-    palace: 'Дворец'
+  var TypeHousing = {
+    FLAT: 'Квартира',
+    BUNGALO: 'Бунгало',
+    HOUSE: 'Дом',
+    PALACE: 'Дворец'
   };
 
   var mapFilters = document.querySelector('.map__filters-container');
@@ -14,10 +14,10 @@
 
   var createFeature = function (card) {
     var featureFragment = document.createDocumentFragment();
-    card.offer.features.forEach(function (it) {
-      var featureElement = document.createElement('li');
-      featureElement.className = 'popup__feature popup__feature--' + it;
-      featureFragment.appendChild(featureElement);
+    card.offer.features.forEach(function (item) {
+      var featureItem = document.createElement('li');
+      featureItem.className = 'popup__feature popup__feature--' + item;
+      featureFragment.appendChild(featureItem);
     });
 
     return featureFragment;
@@ -25,53 +25,53 @@
 
   var createPhoto = function (card) {
     var photoFragment = document.createDocumentFragment();
-    card.offer.photos.forEach(function (it) {
-      var photoElement = popupPhoto.cloneNode(true);
-      photoElement.src = it;
-      photoFragment.appendChild(photoElement);
+    card.offer.photos.forEach(function (item) {
+      var photoItem = popupPhoto.cloneNode(true);
+      photoItem.src = item;
+      photoFragment.appendChild(photoItem);
     });
 
     return photoFragment;
   };
 
   var renderCard = function (card) {
-    var cardElement = cardTemplate.cloneNode(true);
+    var cardItem = cardTemplate.cloneNode(true);
 
-    cardElement.querySelector('.popup__title').textContent = card.offer.title;
-    cardElement.querySelector('.popup__text--address').textContent = card.offer.address;
-    cardElement.querySelector('.popup__text--price').textContent = card.offer.price + '₽/ночь';
-    cardElement.querySelector('.popup__type').textContent = typeHousing[card.offer.type];
-    cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests;
-    cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
-    cardElement.querySelector('.popup__features').innerHTML = '';
-    cardElement.querySelector('.popup__features').appendChild(createFeature(card));
-    cardElement.querySelector('.popup__description').textContent = card.offer.description;
-    cardElement.querySelector('.popup__photos').innerHTML = '';
-    cardElement.querySelector('.popup__photos').appendChild(createPhoto(card));
-    cardElement.querySelector('.popup__avatar').src = card.author.avatar;
+    cardItem.querySelector('.popup__title').textContent = card.offer.title;
+    cardItem.querySelector('.popup__text--address').textContent = card.offer.address;
+    cardItem.querySelector('.popup__text--price').textContent = card.offer.price + '₽/ночь';
+    cardItem.querySelector('.popup__type').textContent = TypeHousing[card.offer.type.toUpperCase()];
+    cardItem.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests;
+    cardItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
+    cardItem.querySelector('.popup__features').innerHTML = '';
+    cardItem.querySelector('.popup__features').appendChild(createFeature(card));
+    cardItem.querySelector('.popup__description').textContent = card.offer.description;
+    cardItem.querySelector('.popup__photos').innerHTML = '';
+    cardItem.querySelector('.popup__photos').appendChild(createPhoto(card));
+    cardItem.querySelector('.popup__avatar').src = card.author.avatar;
 
-    window.map.element.insertBefore(cardElement, mapFilters);
+    window.map.element.insertBefore(cardItem, mapFilters);
 
-    var closeBtnCard = cardElement.querySelector('.popup__close');
+    var closeButtonCard = cardItem.querySelector('.popup__close');
 
     var onCardEscPress = function (evt) {
-      window.util.onEscPress(evt, closeCard);
+      window.util.pressEsc(evt, closeCard);
     };
 
     var closeCard = function () {
       window.pin.deactivate();
-      cardElement.remove();
+      cardItem.remove();
       document.removeEventListener('keydown', onCardEscPress);
     };
 
-    var onCloseBtnCardClick = function () {
+    var onCloseButtonCardClick = function () {
       closeCard();
     };
 
-    closeBtnCard.addEventListener('click', onCloseBtnCardClick);
+    closeButtonCard.addEventListener('click', onCloseButtonCardClick);
     document.addEventListener('keydown', onCardEscPress);
 
-    return cardElement;
+    return cardItem;
   };
 
   var removeCard = function () {

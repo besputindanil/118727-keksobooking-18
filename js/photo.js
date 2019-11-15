@@ -3,7 +3,7 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var HEADER_PREVIEW = 'img/muffin-grey.svg';
-  var typePhotoOptions = {
+  var TypePhotoOptions = {
     WIDTH: 70,
     HEIGHT: 70,
     BORDER_RADIUS: 5
@@ -14,21 +14,34 @@
   var typePhotoChooser = document.querySelector('.ad-form__upload input[type=file]');
   var typePhotoImage = document.querySelector('.ad-form__photo');
 
-  var onUserPhotoChange = function () {
-    var file = userPhotoChooser.files[0];
+  var changeUserPhoto = function (result) {
+    userPhotoImage.src = result;
+  };
+
+  var changeTypePhoto = function (result) {
+    var newPhoto = document.createElement('img');
+    newPhoto.src = result;
+    newPhoto.width = TypePhotoOptions.WIDTH;
+    newPhoto.height = TypePhotoOptions.HEIGHT;
+    newPhoto.style.borderRadius = TypePhotoOptions.BORDER_RADIUS + 'px';
+    typePhotoImage.appendChild(newPhoto);
+  };
+
+  var loadImage = function (element, action) {
+    var file = element.files[0];
 
     if (file) {
       var fileName = file.name.toLowerCase();
 
-      var matches = FILE_TYPES.some(function (it) {
-        return fileName.endsWith(it);
+      var hasMatchedFileType = FILE_TYPES.some(function (item) {
+        return fileName.endsWith(item);
       });
 
-      if (matches) {
+      if (hasMatchedFileType) {
         var reader = new FileReader();
 
-        reader.addEventListener('load', function () {
-          userPhotoImage.src = reader.result;
+        reader.addEventListener('load', function (evt) {
+          action(evt.target.result);
         });
 
         reader.readAsDataURL(file);
@@ -36,43 +49,22 @@
     }
   };
 
+  var onUserPhotoChange = function () {
+    loadImage(userPhotoChooser, changeUserPhoto);
+  };
   var onTypePhotoChange = function () {
-    var file = typePhotoChooser.files[0];
-
-    if (file) {
-      var fileName = file.name.toLowerCase();
-
-      var matches = FILE_TYPES.some(function (it) {
-        return fileName.endsWith(it);
-      });
-
-      if (matches) {
-        var reader = new FileReader();
-
-        reader.addEventListener('load', function () {
-          var newPhoto = document.createElement('img');
-          newPhoto.src = reader.result;
-          newPhoto.width = typePhotoOptions.WIDTH;
-          newPhoto.height = typePhotoOptions.HEIGHT;
-          newPhoto.style.borderRadius = typePhotoOptions.BORDER_RADIUS + 'px';
-          typePhotoImage.appendChild(newPhoto);
-        });
-
-        reader.readAsDataURL(file);
-      }
-    }
+    loadImage(typePhotoChooser, changeTypePhoto);
   };
 
   userPhotoChooser.addEventListener('change', onUserPhotoChange);
-
   typePhotoChooser.addEventListener('change', onTypePhotoChange);
 
   var removeImage = function () {
     userPhotoImage.src = HEADER_PREVIEW;
-    var addTypePhotos = typePhotoImage.querySelectorAll('img');
-    if (addTypePhotos) {
-      addTypePhotos.forEach(function (it) {
-        it.remove();
+    var typePhotos = typePhotoImage.querySelectorAll('img');
+    if (typePhotos) {
+      typePhotos.forEach(function (item) {
+        item.remove();
       });
     }
   };

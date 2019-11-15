@@ -1,29 +1,25 @@
 'use strict';
 
 (function () {
-  var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HEIGHT = 65;
-  var ARROW_HEIGHT = 22;
   var ROOM_CAPACITY_MESSAGE = 'Количество гостей не соответствует количеству комнат';
 
-  var roomCapacityRelation = {
+  var RoomCapacityRelation = {
     1: [1],
     2: [1, 2],
     3: [1, 2, 3],
     100: [0]
   };
 
-  var typePriceRelation = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
+  var TypePriceRelation = {
+    BUNGALO: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
   };
 
   var adForm = document.querySelector('.ad-form');
   var adFormFieldset = adForm.querySelectorAll('fieldset');
   var priceInput = adForm.querySelector('#price');
-  var addressInput = adForm.querySelector('#address');
   var typeSelect = document.querySelector('[name=type]');
   var timeInSelect = document.querySelector('[name=timein]');
   var timeOutSelect = document.querySelector('[name=timeout]');
@@ -43,12 +39,8 @@
     adForm.reset();
   };
 
-  var setAddressCoords = function (x, y) {
-    addressInput.value = (x + Math.floor(MAIN_PIN_WIDTH / 2)) + ', ' + (y + Math.floor(MAIN_PIN_HEIGHT / 2) + ARROW_HEIGHT);
-  };
-
   var onTypeChange = function (evt) {
-    var minPrice = typePriceRelation[evt.target.value];
+    var minPrice = TypePriceRelation[evt.target.value.toUpperCase()];
     priceInput.min = minPrice;
     priceInput.placeholder = minPrice;
   };
@@ -69,15 +61,20 @@
   var onRoomCapacityChange = function () {
     var roomsNumber = roomNumberSelect.value;
     var capacity = parseInt(capacitySelect.value, 10);
-    capacitySelect.setCustomValidity(roomCapacityRelation[roomsNumber].includes(capacity) ? '' : ROOM_CAPACITY_MESSAGE);
+    capacitySelect.setCustomValidity(RoomCapacityRelation[roomsNumber].includes(capacity) ? '' : ROOM_CAPACITY_MESSAGE);
   };
 
   roomNumberSelect.addEventListener('change', onRoomCapacityChange);
   capacitySelect.addEventListener('change', onRoomCapacityChange);
 
+  var changePricePlaceholder = function () {
+    priceInput.placeholder = TypePriceRelation.FLAT;
+  };
+
   window.form = {
     activate: activateForm,
     deactivate: deactivateForm,
-    setAddressCoords: setAddressCoords
+    changePricePlaceholder: changePricePlaceholder,
+    changeRoomCapacity: onRoomCapacityChange
   };
 })();

@@ -5,25 +5,25 @@
   var ESC_KEYCODE = 27;
 
   window.util = {
-    onEnterPress: function (evt, func) {
+    pressEnter: function (evt, action) {
       if (evt.keyCode === ENTER_KEYCODE) {
-        func();
+        action();
       }
     },
-    onEscPress: function (evt, func) {
+    pressEsc: function (evt, action) {
       if (evt.keyCode === ESC_KEYCODE) {
-        func();
+        action();
       }
     },
-    setDisabled: function (element) {
-      for (var i = 0; i < element.length; i++) {
-        element[i].setAttribute('disabled', 'disabled');
-      }
+    setDisabled: function (elements) {
+      elements.forEach(function (item) {
+        item.disabled = true;
+      });
     },
-    removeDisabled: function (element) {
-      for (var i = 0; i < element.length; i++) {
-        element[i].removeAttribute('disabled', 'disabled');
-      }
-    }
+    removeDisabled: function (elements) {
+      elements.forEach(function (item) {
+        item.disabled = false;
+      });
+    },
   };
 })();
