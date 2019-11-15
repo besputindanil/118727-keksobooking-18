@@ -39,6 +39,8 @@
 
   var onMapPinMainMouseDown = function (evt) {
     evt.preventDefault();
+    getActivePage();
+
 
     var startCoords = {
       x: evt.clientX,
@@ -82,7 +84,6 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      getActivePage();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);

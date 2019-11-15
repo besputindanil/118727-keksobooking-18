@@ -61,7 +61,7 @@
     document.addEventListener('keydown', onSuccessEscPress);
   };
 
-  var onResetButtonClick = function () {
+  var deactivatePage = function () {
     window.map.element.classList.add('map--faded');
     window.filter.deactivate();
     window.form.deactivate();
@@ -72,11 +72,16 @@
     window.data.pins = [];
   };
 
+  var onResetButtonClick = function (evt) {
+    evt.preventDefault();
+    deactivatePage();
+  };
+
   resetButton.addEventListener('click', onResetButtonClick);
 
   var onFormSuccessSubmit = function () {
     onSuccess();
-    onResetButtonClick();
+    deactivatePage();
   };
 
   adForm.addEventListener('submit', function (evt) {

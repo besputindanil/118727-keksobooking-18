@@ -14,21 +14,34 @@
   var typePhotoChooser = document.querySelector('.ad-form__upload input[type=file]');
   var typePhotoImage = document.querySelector('.ad-form__photo');
 
-  var onUserPhotoChange = function () {
-    var file = userPhotoChooser.files[0];
+  var changeUserPhoto = function (result) {
+    userPhotoImage.src = result;
+  };
+
+  var changeTypePhoto = function (result) {
+    var newPhoto = document.createElement('img');
+    newPhoto.src = result;
+    newPhoto.width = TypePhotoOptions.WIDTH;
+    newPhoto.height = TypePhotoOptions.HEIGHT;
+    newPhoto.style.borderRadius = TypePhotoOptions.BORDER_RADIUS + 'px';
+    typePhotoImage.appendChild(newPhoto);
+  };
+
+  var loadImage = function (element, action) {
+    var file = element.files[0];
 
     if (file) {
       var fileName = file.name.toLowerCase();
 
-      var matches = FILE_TYPES.some(function (item) {
+      var hasMatchedFileType = FILE_TYPES.some(function (item) {
         return fileName.endsWith(item);
       });
 
-      if (matches) {
+      if (hasMatchedFileType) {
         var reader = new FileReader();
 
-        reader.addEventListener('load', function () {
-          userPhotoImage.src = reader.result;
+        reader.addEventListener('load', function (evt) {
+          action(evt.target.result);
         });
 
         reader.readAsDataURL(file);
@@ -36,35 +49,14 @@
     }
   };
 
+  var onUserPhotoChange = function () {
+    loadImage(userPhotoChooser, changeUserPhoto);
+  };
   var onTypePhotoChange = function () {
-    var file = typePhotoChooser.files[0];
-
-    if (file) {
-      var fileName = file.name.toLowerCase();
-
-      var matches = FILE_TYPES.some(function (item) {
-        return fileName.endsWith(item);
-      });
-
-      if (matches) {
-        var reader = new FileReader();
-
-        reader.addEventListener('load', function () {
-          var newPhoto = document.createElement('img');
-          newPhoto.src = reader.result;
-          newPhoto.width = TypePhotoOptions.WIDTH;
-          newPhoto.height = TypePhotoOptions.HEIGHT;
-          newPhoto.style.borderRadius = TypePhotoOptions.BORDER_RADIUS + 'px';
-          typePhotoImage.appendChild(newPhoto);
-        });
-
-        reader.readAsDataURL(file);
-      }
-    }
+    loadImage(typePhotoChooser, changeTypePhoto);
   };
 
   userPhotoChooser.addEventListener('change', onUserPhotoChange);
-
   typePhotoChooser.addEventListener('change', onTypePhotoChange);
 
   var removeImage = function () {

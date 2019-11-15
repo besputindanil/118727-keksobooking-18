@@ -8,40 +8,44 @@
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   var renderPin = function (pin) {
-    var pinElement = pinTemplate.cloneNode(true);
+    var pinItem = pinTemplate.cloneNode(true);
 
-    pinElement.style.left = pin.location.x - PIN_WIDTH / 2 + 'px';
-    pinElement.style.top = pin.location.y - PIN_HEIGHT + 'px';
-    pinElement.querySelector('img').src = pin.author.avatar;
-    pinElement.alt = pin.offer.title;
+    pinItem.style.left = pin.location.x - PIN_WIDTH / 2 + 'px';
+    pinItem.style.top = pin.location.y - PIN_HEIGHT + 'px';
+    pinItem.querySelector('img').src = pin.author.avatar;
+    pinItem.alt = pin.offer.title;
 
-    var onPinElementClick = function () {
+    var onPinItemClick = function () {
       deactivatePin();
-      pinElement.classList.add('map__pin--active');
+      pinItem.classList.add('map__pin--active');
       window.card.remove();
       window.card.render(pin);
     };
 
-    var onPinElementEnterPress = function (evt) {
-      window.util.pressEnter(evt, onPinElementClick);
+    var onPinItemEnterPress = function (evt) {
+      window.util.pressEnter(evt, onPinItemClick);
     };
 
-    pinElement.addEventListener('click', onPinElementClick);
-    pinElement.addEventListener('keydown', onPinElementEnterPress);
+    pinItem.addEventListener('click', onPinItemClick);
+    pinItem.addEventListener('keydown', onPinItemEnterPress);
 
-    return pinElement;
+    return pinItem;
   };
 
   var render = function (pins) {
-    var takeNumber = pins.length > PINS_COUNT ? PINS_COUNT : pins.length;
-    for (var i = 0; i < takeNumber; i++) {
-      mapPins.appendChild(renderPin(pins[i]));
+    var pinFragment = document.createDocumentFragment();
+    var preparedPinsArray = pins.slice(0, PINS_COUNT);
+
+    for (var i = 0; i < preparedPinsArray.length; i++) {
+      pinFragment.appendChild(renderPin(pins[i]));
     }
+
+    mapPins.appendChild(pinFragment);
   };
 
   var removePin = function () {
-    var mapPinElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    mapPinElements.forEach(function (item) {
+    var mapPinItems = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    mapPinItems.forEach(function (item) {
       item.remove();
     });
   };

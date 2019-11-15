@@ -60,7 +60,7 @@
   };
 
   var updatePins = function () {
-    var pinsCopy = window.data.pins.slice(0, window.pin.count);
+    var pinsCopy = window.data.pins.slice();
     var filterPins = pinsCopy.filter(filterType).filter(filterPrice).filter(filterRooms).filter(filterGuests).filter(filterFeauters);
     window.pin.render(filterPins);
   };

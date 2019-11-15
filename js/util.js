@@ -5,14 +5,14 @@
   var ESC_KEYCODE = 27;
 
   window.util = {
-    pressEnter: function (evt, func) {
+    pressEnter: function (evt, action) {
       if (evt.keyCode === ENTER_KEYCODE) {
-        func();
+        action();
       }
     },
-    pressEsc: function (evt, func) {
+    pressEsc: function (evt, action) {
       if (evt.keyCode === ESC_KEYCODE) {
-        func();
+        action();
       }
     },
     setDisabled: function (elements) {
