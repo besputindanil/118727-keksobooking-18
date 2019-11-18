@@ -67,9 +67,9 @@
 
       var restrictions = {
         top: IntervalCoords.Y_MIN - mapPinMain.offsetHeight - ARROW_HEIGHT,
-        right: IntervalCoords.X_MAX - mapPinMain.offsetWidth / 2,
+        right: IntervalCoords.X_MAX - Math.floor(mapPinMain.offsetWidth / 2),
         bottom: IntervalCoords.Y_MAX - mapPinMain.offsetHeight - ARROW_HEIGHT,
-        left: IntervalCoords.X_MIN - mapPinMain.offsetWidth / 2
+        left: IntervalCoords.X_MIN - Math.floor(mapPinMain.offsetWidth / 2)
       };
 
       if (mapPinMainCoords.x >= restrictions.left && mapPinMainCoords.x <= restrictions.right) {
