@@ -29,8 +29,8 @@
   var roomNumberSelect = document.querySelector('[name=rooms]');
   var capacitySelect = document.querySelector('[name=capacity]');
 
-  var changeBorderStyle = function (input, border) {
-    input.style.border = border;
+  var changeBorderStyle = function (element, border) {
+    element.style.border = border;
   };
 
   var removeBorder = function () {
@@ -69,7 +69,7 @@
   typeSelect.addEventListener('change', onTypeChange);
 
   var addDefaultMinPrice = function () {
-    priceInput.min = TypePriceRelation.Flat;
+    priceInput.min = TypePriceRelation.FLAT;
   };
 
   var changePricePlaceholder = function () {
