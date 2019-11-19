@@ -25,25 +25,36 @@
   var map = document.querySelector('.map');
   var addressInput = document.querySelector('#address');
 
-  var setDefaultCoords = function () {
-    addressInput.value = (PrimaryMapPinCoords.X + Math.floor(PinSizes.MAIN_PIN_WIDTH / 2)) + ', ' + (PrimaryMapPinCoords.Y + Math.floor(MAIN_PIN_HEIGHT / 2));
-  };
-
-  setDefaultCoords();
-
-  var setPrimaryCoords = function () {
-    addressInput.value = (PrimaryMapPinCoords.X + Math.floor(PinSizes.MAIN_PIN_WIDTH / 2)) + ', ' + (PrimaryMapPinCoords.Y + PinSizes.MAIN_PIN_WITH_POINT_HIGHT);
-  };
-
   var setAddressCoords = function (x, y) {
     addressInput.value = x + ', ' + y;
+  };
+
+  var setPrimaryCoords = function (isActivePage) {
+    var deactivatedX = PrimaryMapPinCoords.X + Math.floor(PinSizes.MAIN_PIN_WIDTH / 2);
+    var deactivatedY = PrimaryMapPinCoords.Y + Math.floor(MAIN_PIN_HEIGHT / 2);
+    var activatedY = PrimaryMapPinCoords.Y + PinSizes.MAIN_PIN_WITH_POINT_HIGHT;
+
+    if (isActivePage) {
+      setAddressCoords(deactivatedX, activatedY);
+    } else {
+      setAddressCoords(deactivatedX, deactivatedY);
+    }
+  };
+
+  setPrimaryCoords();
+
+  var setCurrentCoords = function () {
+    var changedX = parseInt(mapPinMain.style.left, 10) + Math.floor(PinSizes.MAIN_PIN_WIDTH / 2);
+    var changedY = parseInt(mapPinMain.style.top, 10) + PinSizes.MAIN_PIN_WITH_POINT_HIGHT;
+
+    setAddressCoords(changedX, changedY);
   };
 
   var getActivePage = function () {
     map.classList.remove('map--faded');
     window.data.loadPins();
     window.form.activate();
-    setPrimaryCoords();
+    setPrimaryCoords(true);
     window.form.changePricePlaceholder();
     window.form.changeRoomCapacity();
   };
@@ -83,7 +94,7 @@
         mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       }
 
-      setAddressCoords(correctedX, correctedY);
+      setCurrentCoords();
     };
 
     var onMouseUp = function (upEvt) {
@@ -105,7 +116,7 @@
   mapPinMain.addEventListener('keydown', onMapPinMainEnterPress);
 
   var getPinMainPrimaryPosition = function () {
-    setDefaultCoords();
+    setPrimaryCoords();
     mapPinMain.style.left = PrimaryMapPinCoords.X + 'px';
     mapPinMain.style.top = PrimaryMapPinCoords.Y + 'px';
   };
