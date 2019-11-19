@@ -51,6 +51,7 @@
     adForm.classList.add('ad-form--disabled');
     adForm.reset();
     removeBorder();
+    addDefaultMinPrice();
   };
 
   var onTitleInvalid = function () {
@@ -66,6 +67,14 @@
   };
 
   typeSelect.addEventListener('change', onTypeChange);
+
+  var addDefaultMinPrice = function () {
+    priceInput.min = TypePriceRelation.Flat;
+  };
+
+  var changePricePlaceholder = function () {
+    priceInput.placeholder = TypePriceRelation.FLAT;
+  };
 
   var onPriceInvalid = function () {
     changeBorderStyle(priceInput, RED_BORDER);
@@ -98,10 +107,6 @@
   };
 
   capacitySelect.addEventListener('invalid', onCapacityInvalid);
-
-  var changePricePlaceholder = function () {
-    priceInput.placeholder = TypePriceRelation.FLAT;
-  };
 
   window.form = {
     activate: activateForm,
