@@ -17,14 +17,14 @@
   var deactivateFilters = function () {
     filters.reset();
     window.util.setDisabled(filtersSelect);
-    housingFeatures.setAttribute('disabled', 'disabled');
+    housingFeatures.disabled = true;
   };
 
   deactivateFilters();
 
   var activateFilters = function () {
     window.util.removeDisabled(filtersSelect);
-    housingFeatures.removeAttribute('disabled', 'disabled');
+    housingFeatures.disabled = false;
   };
 
   var filterType = function (pin) {
