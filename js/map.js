@@ -1,11 +1,18 @@
 'use strict';
 
 (function () {
-  var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 65;
   var ARROW_HEIGHT = 22;
-  var PRIMARY_MAIN_PIN_X = 570;
-  var PRIMARY_MAIN_PIN_Y = 375;
+
+  var PinSizes = {
+    MAIN_PIN_WITH_POINT_HIGHT: MAIN_PIN_HEIGHT + ARROW_HEIGHT,
+    MAIN_PIN_WIDTH: 65
+  };
+
+  var PrimaryMapPinCoords = {
+    X: 570,
+    Y: 375
+  };
 
   var IntervalCoords = {
     X_MIN: 0,
@@ -19,13 +26,13 @@
   var addressInput = document.querySelector('#address');
 
   var setPrimaryCoords = function () {
-    addressInput.value = (PRIMARY_MAIN_PIN_X + Math.floor(MAIN_PIN_WIDTH / 2)) + ', ' + (PRIMARY_MAIN_PIN_Y + Math.floor(MAIN_PIN_HEIGHT / 2));
+    addressInput.value = (PrimaryMapPinCoords.X + Math.floor(PinSizes.MAIN_PIN_WIDTH / 2)) + ', ' + (PrimaryMapPinCoords.Y + Math.floor(MAIN_PIN_HEIGHT / 2));
   };
 
   setPrimaryCoords();
 
   var setAddressCoords = function (x, y) {
-    addressInput.value = (x + Math.floor(MAIN_PIN_WIDTH / 2)) + ', ' + (y + MAIN_PIN_HEIGHT + ARROW_HEIGHT);
+    addressInput.value = x + ', ' + y;
   };
 
   var getActivePage = function () {
@@ -47,6 +54,9 @@
       y: evt.clientY
     };
 
+    var correctedX;
+    var correctedY;
+
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
@@ -60,26 +70,17 @@
         y: moveEvt.clientY
       };
 
-      var mapPinMainCoords = {
-        x: mapPinMain.offsetLeft - shift.x,
-        y: mapPinMain.offsetTop - shift.y
-      };
-
-      var restrictions = {
-        top: IntervalCoords.Y_MIN - mapPinMain.offsetHeight - ARROW_HEIGHT,
-        right: IntervalCoords.X_MAX - Math.floor(mapPinMain.offsetWidth / 2),
-        bottom: IntervalCoords.Y_MAX - mapPinMain.offsetHeight - ARROW_HEIGHT,
-        left: IntervalCoords.X_MIN - Math.floor(mapPinMain.offsetWidth / 2)
-      };
-
-      if (mapPinMainCoords.x >= restrictions.left && mapPinMainCoords.x <= restrictions.right) {
-        mapPinMain.style.left = mapPinMainCoords.x + 'px';
-      }
-      if (mapPinMainCoords.y >= restrictions.top && mapPinMainCoords.y <= restrictions.bottom) {
-        mapPinMain.style.top = mapPinMainCoords.y + 'px';
+      correctedX = Math.floor(mapPinMain.offsetLeft - shift.x + PinSizes.MAIN_PIN_WIDTH / 2);
+      if (correctedX >= IntervalCoords.X_MIN && correctedX <= IntervalCoords.X_MAX) {
+        mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
       }
 
-      setAddressCoords(mapPinMainCoords.x, mapPinMainCoords.y);
+      correctedY = mapPinMain.offsetTop - shift.y + PinSizes.MAIN_PIN_WITH_POINT_HIGHT;
+      if (correctedY >= IntervalCoords.Y_MIN && correctedY <= IntervalCoords.Y_MAX) {
+        mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+      }
+
+      setAddressCoords(correctedX, correctedY);
     };
 
     var onMouseUp = function (upEvt) {
@@ -102,8 +103,8 @@
 
   var getPinMainPrimaryPosition = function () {
     setPrimaryCoords();
-    mapPinMain.style.left = PRIMARY_MAIN_PIN_X + 'px';
-    mapPinMain.style.top = PRIMARY_MAIN_PIN_Y + 'px';
+    mapPinMain.style.left = PrimaryMapPinCoords.X + 'px';
+    mapPinMain.style.top = PrimaryMapPinCoords.Y + 'px';
   };
 
   window.map = {
