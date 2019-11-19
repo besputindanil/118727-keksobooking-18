@@ -36,6 +36,8 @@
 
   var renderCard = function (card) {
     var cardItem = cardTemplate.cloneNode(true);
+    var cardPopupFeature = cardItem.querySelector('.popup__features');
+    var cardPopupPhoto = cardItem.querySelector('.popup__photos');
 
     cardItem.querySelector('.popup__title').textContent = card.offer.title;
     cardItem.querySelector('.popup__text--address').textContent = card.offer.address;
@@ -43,11 +45,11 @@
     cardItem.querySelector('.popup__type').textContent = TypeHousing[card.offer.type.toUpperCase()];
     cardItem.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests;
     cardItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
-    cardItem.querySelector('.popup__features').innerHTML = '';
-    cardItem.querySelector('.popup__features').appendChild(createFeature(card));
+    cardPopupFeature.innerHTML = '';
+    cardPopupFeature.appendChild(createFeature(card));
     cardItem.querySelector('.popup__description').textContent = card.offer.description;
-    cardItem.querySelector('.popup__photos').innerHTML = '';
-    cardItem.querySelector('.popup__photos').appendChild(createPhoto(card));
+    cardPopupPhoto.innerHTML = '';
+    cardPopupPhoto.appendChild(createPhoto(card));
     cardItem.querySelector('.popup__avatar').src = card.author.avatar;
 
     window.map.element.insertBefore(cardItem, mapFilters);
