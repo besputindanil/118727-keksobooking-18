@@ -25,11 +25,15 @@
   var map = document.querySelector('.map');
   var addressInput = document.querySelector('#address');
 
-  var setPrimaryCoords = function () {
+  var setDefaultCoords = function () {
     addressInput.value = (PrimaryMapPinCoords.X + Math.floor(PinSizes.MAIN_PIN_WIDTH / 2)) + ', ' + (PrimaryMapPinCoords.Y + Math.floor(MAIN_PIN_HEIGHT / 2));
   };
 
-  setPrimaryCoords();
+  setDefaultCoords();
+
+  var setPrimaryCoords = function () {
+    addressInput.value = (PrimaryMapPinCoords.X + Math.floor(PinSizes.MAIN_PIN_WIDTH / 2)) + ', ' + (PrimaryMapPinCoords.Y + PinSizes.MAIN_PIN_WITH_POINT_HIGHT);
+  };
 
   var setAddressCoords = function (x, y) {
     addressInput.value = x + ', ' + y;
@@ -39,7 +43,7 @@
     map.classList.remove('map--faded');
     window.data.loadPins();
     window.form.activate();
-    setAddressCoords(mapPinMain.offsetLeft, mapPinMain.offsetTop);
+    setPrimaryCoords();
     window.form.changePricePlaceholder();
     window.form.changeRoomCapacity();
   };
@@ -47,7 +51,6 @@
   var onMapPinMainMouseDown = function (evt) {
     evt.preventDefault();
     getActivePage();
-
 
     var startCoords = {
       x: evt.clientX,
@@ -102,7 +105,7 @@
   mapPinMain.addEventListener('keydown', onMapPinMainEnterPress);
 
   var getPinMainPrimaryPosition = function () {
-    setPrimaryCoords();
+    setDefaultCoords();
     mapPinMain.style.left = PrimaryMapPinCoords.X + 'px';
     mapPinMain.style.top = PrimaryMapPinCoords.Y + 'px';
   };
