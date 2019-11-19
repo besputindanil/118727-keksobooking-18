@@ -2,6 +2,8 @@
 
 (function () {
   var ROOM_CAPACITY_MESSAGE = 'Количество гостей не соответствует количеству комнат';
+  var RED_BORDER = '1px solid red';
+  var NO_BORDER = '';
 
   var RoomCapacityRelation = {
     1: [1],
@@ -20,11 +22,22 @@
   var adForm = document.querySelector('.ad-form');
   var adFormFieldset = adForm.querySelectorAll('fieldset');
   var priceInput = adForm.querySelector('#price');
+  var titleInput = adForm.querySelector('#title');
   var typeSelect = document.querySelector('[name=type]');
   var timeInSelect = document.querySelector('[name=timein]');
   var timeOutSelect = document.querySelector('[name=timeout]');
   var roomNumberSelect = document.querySelector('[name=rooms]');
   var capacitySelect = document.querySelector('[name=capacity]');
+
+  var changeBorderStyle = function (input, border) {
+    input.style.border = border;
+  };
+
+  var removeBorder = function () {
+    changeBorderStyle(titleInput, NO_BORDER);
+    changeBorderStyle(priceInput, NO_BORDER);
+    changeBorderStyle(capacitySelect, NO_BORDER);
+  };
 
   window.util.setDisabled(adFormFieldset);
 
@@ -37,7 +50,14 @@
     window.util.setDisabled(adFormFieldset);
     adForm.classList.add('ad-form--disabled');
     adForm.reset();
+    removeBorder();
   };
+
+  var onTitleInvalid = function () {
+    changeBorderStyle(titleInput, RED_BORDER);
+  };
+
+  titleInput.addEventListener('invalid', onTitleInvalid);
 
   var onTypeChange = function (evt) {
     var minPrice = TypePriceRelation[evt.target.value.toUpperCase()];
@@ -46,6 +66,12 @@
   };
 
   typeSelect.addEventListener('change', onTypeChange);
+
+  var onPriceInvalid = function () {
+    changeBorderStyle(priceInput, RED_BORDER);
+  };
+
+  priceInput.addEventListener('invalid', onPriceInvalid);
 
   var onTimeInSelectChange = function (evt) {
     timeOutSelect.value = evt.target.value;
@@ -66,6 +92,12 @@
 
   roomNumberSelect.addEventListener('change', onRoomCapacityChange);
   capacitySelect.addEventListener('change', onRoomCapacityChange);
+
+  var onCapacityInvalid = function () {
+    changeBorderStyle(capacitySelect, RED_BORDER);
+  };
+
+  capacitySelect.addEventListener('invalid', onCapacityInvalid);
 
   var changePricePlaceholder = function () {
     priceInput.placeholder = TypePriceRelation.FLAT;
