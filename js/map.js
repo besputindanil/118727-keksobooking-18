@@ -55,8 +55,7 @@
     window.data.loadPins();
     window.form.activate();
     setPrimaryCoords(true);
-    window.form.changePricePlaceholder();
-    window.form.changeRoomCapacity();
+    window.form.validateRoomCapacity();
   };
 
   var onMapPinMainMouseDown = function (evt) {
@@ -64,35 +63,32 @@
     getActivePage();
 
     var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
+      x: evt.clientX - mapPinMain.getBoundingClientRect().left,
+      y: evt.clientY - mapPinMain.getBoundingClientRect().top
     };
-
-    var correctedX;
-    var correctedY;
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+      var newCoords = {
+        x: moveEvt.clientX - startCoords.x - map.getBoundingClientRect().left,
+        y: moveEvt.clientY - startCoords.y - map.getBoundingClientRect().top
       };
 
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      correctedX = Math.floor(mapPinMain.offsetLeft - shift.x + PinSizes.MAIN_PIN_WIDTH / 2);
-      if (correctedX >= IntervalCoords.X_MIN && correctedX <= IntervalCoords.X_MAX) {
-        mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      if (newCoords.y < IntervalCoords.Y_MIN - PinSizes.MAIN_PIN_WITH_POINT_HIGHT) {
+        newCoords.y = IntervalCoords.Y_MIN - PinSizes.MAIN_PIN_WITH_POINT_HIGHT;
+      } else if (newCoords.y > IntervalCoords.Y_MAX - PinSizes.MAIN_PIN_WITH_POINT_HIGHT) {
+        newCoords.y = IntervalCoords.Y_MAX - PinSizes.MAIN_PIN_WITH_POINT_HIGHT;
       }
 
-      correctedY = mapPinMain.offsetTop - shift.y + PinSizes.MAIN_PIN_WITH_POINT_HIGHT;
-      if (correctedY >= IntervalCoords.Y_MIN && correctedY <= IntervalCoords.Y_MAX) {
-        mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+      if (newCoords.x < IntervalCoords.X_MIN + Math.floor(PinSizes.MAIN_PIN_WIDTH / 2)) {
+        newCoords.x = IntervalCoords.X_MIN - Math.floor(PinSizes.MAIN_PIN_WIDTH / 2);
+      } else if (newCoords.x > IntervalCoords.X_MAX - Math.floor(PinSizes.MAIN_PIN_WIDTH / 2)) {
+        newCoords.x = IntervalCoords.X_MAX - Math.floor(PinSizes.MAIN_PIN_WIDTH / 2);
       }
+
+      mapPinMain.style.left = newCoords.x + 'px';
+      mapPinMain.style.top = newCoords.y + 'px';
 
       setCurrentCoords();
     };

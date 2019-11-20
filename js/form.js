@@ -33,7 +33,25 @@
     element.style.border = border;
   };
 
-  var removeBorder = function () {
+  var onFormInvalid = function (evt) {
+    changeBorderStyle(evt.target, RED_BORDER);
+  };
+
+  adForm.addEventListener('invalid', onFormInvalid, true);
+
+  var removeElementBorder = function (element) {
+    if (element.checkValidity()) {
+      changeBorderStyle(element, NO_BORDER);
+    }
+  };
+
+  var onTitleChange = function () {
+    removeElementBorder(titleInput);
+  };
+
+  titleInput.addEventListener('change', onTitleChange);
+
+  var removeAllBorders = function () {
     changeBorderStyle(titleInput, NO_BORDER);
     changeBorderStyle(priceInput, NO_BORDER);
     changeBorderStyle(capacitySelect, NO_BORDER);
@@ -50,15 +68,9 @@
     window.util.setDisabled(adFormFieldset);
     adForm.classList.add('ad-form--disabled');
     adForm.reset();
-    removeBorder();
-    addDefaultMinPrice();
+    removeAllBorders();
+    addDefaultPrice();
   };
-
-  var onTitleInvalid = function () {
-    changeBorderStyle(titleInput, RED_BORDER);
-  };
-
-  titleInput.addEventListener('invalid', onTitleInvalid);
 
   var onTypeChange = function (evt) {
     var minPrice = TypePriceRelation[evt.target.value.toUpperCase()];
@@ -68,19 +80,16 @@
 
   typeSelect.addEventListener('change', onTypeChange);
 
-  var addDefaultMinPrice = function () {
-    priceInput.min = TypePriceRelation.FLAT;
+  var onPriceChange = function () {
+    removeElementBorder(priceInput);
   };
 
-  var changePricePlaceholder = function () {
+  priceInput.addEventListener('change', onPriceChange);
+
+  var addDefaultPrice = function () {
+    priceInput.min = TypePriceRelation.FLAT;
     priceInput.placeholder = TypePriceRelation.FLAT;
   };
-
-  var onPriceInvalid = function () {
-    changeBorderStyle(priceInput, RED_BORDER);
-  };
-
-  priceInput.addEventListener('invalid', onPriceInvalid);
 
   var onTimeInSelectChange = function (evt) {
     timeOutSelect.value = evt.target.value;
@@ -93,25 +102,27 @@
   timeInSelect.addEventListener('change', onTimeInSelectChange);
   timeOutSelect.addEventListener('change', onTimeOutSelectChange);
 
-  var onRoomCapacityChange = function () {
+  var validateRoomCapacity = function () {
     var roomsNumber = roomNumberSelect.value;
     var capacity = parseInt(capacitySelect.value, 10);
     capacitySelect.setCustomValidity(RoomCapacityRelation[roomsNumber].includes(capacity) ? '' : ROOM_CAPACITY_MESSAGE);
   };
 
-  roomNumberSelect.addEventListener('change', onRoomCapacityChange);
-  capacitySelect.addEventListener('change', onRoomCapacityChange);
-
-  var onCapacityInvalid = function () {
-    changeBorderStyle(capacitySelect, RED_BORDER);
+  var onRoomChange = function () {
+    validateRoomCapacity();
   };
 
-  capacitySelect.addEventListener('invalid', onCapacityInvalid);
+  var onCapacityChange = function () {
+    validateRoomCapacity();
+    removeElementBorder(capacitySelect);
+  };
+
+  roomNumberSelect.addEventListener('change', onRoomChange);
+  capacitySelect.addEventListener('change', onCapacityChange);
 
   window.form = {
     activate: activateForm,
     deactivate: deactivateForm,
-    changePricePlaceholder: changePricePlaceholder,
-    changeRoomCapacity: onRoomCapacityChange
+    validateRoomCapacity: validateRoomCapacity
   };
 })();
