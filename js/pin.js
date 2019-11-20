@@ -36,9 +36,9 @@
     var pinFragment = document.createDocumentFragment();
     var preparedPinsArray = pins.slice(0, PINS_COUNT);
 
-    for (var i = 0; i < preparedPinsArray.length; i++) {
-      pinFragment.appendChild(renderPin(pins[i]));
-    }
+    preparedPinsArray.forEach(function (item) {
+      pinFragment.appendChild(renderPin(item));
+    });
 
     mapPins.appendChild(pinFragment);
   };

@@ -17,14 +17,14 @@
   var deactivateFilters = function () {
     filters.reset();
     window.util.setDisabled(filtersSelect);
-    housingFeatures.setAttribute('disabled', 'disabled');
+    housingFeatures.disabled = true;
   };
 
   deactivateFilters();
 
   var activateFilters = function () {
     window.util.removeDisabled(filtersSelect);
-    housingFeatures.removeAttribute('disabled', 'disabled');
+    housingFeatures.disabled = false;
   };
 
   var filterType = function (pin) {
@@ -61,7 +61,9 @@
 
   var updatePins = function () {
     var pinsCopy = window.data.pins.slice();
-    var filterPins = pinsCopy.filter(filterType).filter(filterPrice).filter(filterRooms).filter(filterGuests).filter(filterFeauters);
+    var filterPins = pinsCopy.filter(function (pin) {
+      return filterType(pin) && filterPrice(pin) && filterRooms(pin) && filterGuests(pin) && filterFeauters(pin);
+    });
     window.pin.render(filterPins);
   };
 
